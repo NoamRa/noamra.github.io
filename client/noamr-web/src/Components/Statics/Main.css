@@ -1,0 +1,13 @@
+.everything {
+  display:flex;
+  flex-direction: row;
+  align-content: flex-start;
+}
+
+/* .nav-menu {
+  display: inline-block
+}
+
+.content {
+  display: inline-block
+} */

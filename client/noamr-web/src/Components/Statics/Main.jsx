@@ -7,9 +7,9 @@ import pages from '../../Conf/pages.js';
 import { AuthProvider } from '../../Context/AuthContext';
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   onMenuClick = () => {
 

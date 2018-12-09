@@ -4,3 +4,4 @@
 *.sublime-workspace
 client/noamr-web/src/serviceWorker.js
 client/noamr-web/package-lock.json
+aws-notes.txt

@@ -20,9 +20,11 @@ const Animations = () => {
           Dedicated to the coolest transcendental being - The Flying Spaghetti Monster<br/>
           <br/>
           Music by The Oufs:<br/>
-          Michael Girard (Music, guitar &amp; keyboard)<br/>
-          Patrick Lebrun (Lyrics &amp; vocals)<br/>
-          Xiao Jie (Intro vocals)<br/>
+          <ul>
+            <li>Michael Girard (Music, guitar &amp; keyboard)</li>
+            <li>Patrick Lebrun (Lyrics &amp; vocals)</li>
+            <li>Xiao Jie (Intro vocals)</li>
+          </ul>
         </div>
       </div>
 
@@ -39,14 +41,14 @@ const Animations = () => {
         <div className='animation-text'>
           There are so many things to love in this world<br/>
           Based on the xkcd comic "xkcd Loves the Discovery Channel"<br/>
-          <a href='http://xkcd.com/442' target='_blank'>http://xkcd.com/442</a><br/>
+          <a href='http://xkcd.com/442' target='_blank' rel='noreferrer noopener'>http://xkcd.com/442</a><br/>
           <br/>
           Singing - Olga Nunes<br/>
-          <a href='http://olganunes.com' target='_blank'>http://olganunes.com</a><br/>
-          <a href='http://olganunes.bandcamp.com' target='_blank'>http://olganunes.bandcamp.com</a><br/>
+          <a href='http://olganunes.com' target='_blank' rel='noreferrer noopener'>http://olganunes.com</a><br/>
+          <a href='http://olganunes.bandcamp.com' target='_blank' rel='noreferrer noopener'>http://olganunes.bandcamp.com</a><br/>
           <br/>
           Art &amp; Concept - Randall Munroe<br/>
-          <a href='http://xkcd.com' target='_blank'>http://xkcd.com</a><br/>
+          <a href='http://xkcd.com' target='_blank' rel='noreferrer noopener'>http://xkcd.com</a><br/>
         </div>
       </div>
     </div>

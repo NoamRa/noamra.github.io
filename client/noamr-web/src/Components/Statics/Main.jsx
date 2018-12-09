@@ -4,6 +4,7 @@ import './Main.css'
 import Menu from '../Common/Menu';
 import Content from './Content';
 import pages from '../../Conf/pages.js';
+import { AuthProvider } from '../../Context/AuthContext';
 
 class Main extends Component {
   constructor(props) {
@@ -16,21 +17,23 @@ class Main extends Component {
 
   render() {
     return (
-      <div className='everything'>
-        <span className='nav-menu'>
-          <Menu
-            className='menu'
-            pages={pages}
-            onClick={this.onMenuClick}
-          />
-        </span>
+      <AuthProvider>
+        <div className='everything'>
+          <span className='nav-menu'>
+            <Menu
+              className='menu'
+              pages={pages}
+              onClick={this.onMenuClick}
+            />
+          </span>
 
-        <span className='content'>
-          <Content 
-            pages={pages}
-          />
-        </span>
-      </div>
+          <span className='content'>
+            <Content 
+              pages={pages}
+            />
+          </span>
+        </div>
+      </AuthProvider>
     )
   }
 }

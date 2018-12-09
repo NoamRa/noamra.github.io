@@ -2,3 +2,4 @@
 *.psd
 *.sublime-project
 *.sublime-workspace
+client/noamr-web/package-lock.json

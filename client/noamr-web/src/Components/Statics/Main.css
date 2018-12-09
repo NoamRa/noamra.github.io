@@ -1,7 +1,7 @@
 .everything {
   display:flex;
   flex-direction: row;
-  align-content: flex-start;
+  align-content: center;
 }
 
 /* .nav-menu {

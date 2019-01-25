@@ -8,7 +8,7 @@ class Auth {
   auth0 = new auth0.WebAuth({
     domain: ENV.OATH0_DOMAIN,
     clientID: ENV.OATH0_CLIENT_ID,
-    redirectUri: `${window.location.protocol}//${window.location.host}/callback`,
+    redirectUri: `${window.location.protocol}//${window.location.host}/welcome`,
     responseType: 'token id_token',
     scope: 'openid'
   });

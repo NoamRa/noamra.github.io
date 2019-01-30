@@ -46,7 +46,7 @@ const pages = [
   { 
     id: 'notFound', name: '404', 
     path: '*', componentRef: NotFound, 
-    inMenu: false
+    inMenu: false, exact: false,
   },
 ]
 

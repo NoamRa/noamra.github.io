@@ -42,3 +42,9 @@ export const signInUrl=
 
 
 export default configureAmplify;
+
+export const AUTH_LOCAL_STORAGE = {
+  access_token: "access_token",
+  id_token: "id_token",
+  expires_at: "expires_at",
+}

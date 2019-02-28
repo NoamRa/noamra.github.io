@@ -19,7 +19,8 @@ exports.handler = (event, context, callback) => {
   const payload = JSON.parse(event.body);
   const encodedImage = payload.assetData;
   const decodedImage = Buffer.from(encodedImage, 'base64');
-  const filePath = "items/" + `${uuidv4()}_${payload.assetName}`;
+  const fileName = `${uuidv4()}_${payload.assetName}`;
+  const filePath = "items/" + `${fileName}`;
   const params = {
     Body: decodedImage,
     Bucket: "noamr-web-gallery",
@@ -39,13 +40,20 @@ exports.handler = (event, context, callback) => {
     if (err) {
       callback(err, null);
     } else {
+      const body = {
+        fileName: fileName,
+        filePath: data.key,
+        link: data.Location,
+      };
+      console.log("body:", body);
       const response = {
-        "statusCode": 200,
-        "body": JSON.stringify(data),
+        "statusCode": 201,
         "isBase64Encoded": false,
         "headers": {
-          "my_header": "my_value"
+          "Content-Type": "application/json; charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
         },
+        body: JSON.stringify(body),
       };
       callback(null, response);
     }

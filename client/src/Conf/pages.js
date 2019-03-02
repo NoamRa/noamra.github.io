@@ -3,6 +3,7 @@ import Home from '../Components/Statics/Home';
 import Animations from '../Components/Statics/Animations';
 import Eula from '../Components/Statics/Eula';
 import Admin from '../Components/Statics/Admin';
+import Gallery from '../Components/Gallery/Gallery';
 import NotFound from '../Components/Statics/NotFound';
 
 const pages = [
@@ -21,10 +22,10 @@ const pages = [
     path: '/animations', componentRef: Animations, 
     inMenu: true, icon: 'desktop' 
   },
-  // { id: 'gallery ', displayName: 'Gallery ',
-  //   path: '/gallery', componentRef: Gallery, 
-  //   inMenu: true, icon: 'camera-o' 
-  // },
+  { id: 'gallery ', displayName: 'Gallery ',
+    path: '/gallery', componentRef: Gallery, 
+    inMenu: true, icon: 'camera-o' 
+  },
   { 
     id: 'about', displayName: 'About', 
     path: '/about', componentRef: About, 

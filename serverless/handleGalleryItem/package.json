@@ -1,0 +1,17 @@
+{
+  "name": "handlegalleryitem",
+  "version": "1.0.0",
+  "description": "handle new gallery item (image or video asset). create thumbnail, add metadata and tags",
+  "main": "handleGalleryItem.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "7z -tzip a handleGalleryItem.zip -r handleGalleryItem.js node_modules"
+  },
+  "author": "NoamR",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.6.2",
+    "gm": "^1.23.1",
+    "uuid": "^3.3.2"
+  }
+}

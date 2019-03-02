@@ -14,7 +14,7 @@ export const initAssetData = (): AssetData => ({
 });
 
 const allowedExtensions = [
-  "jpg", "jpeg", "png"
+  "jpg", "jpeg", "png",
 ];
 
 const validatUrlToAsset = (assetUrl: string): boolean => {

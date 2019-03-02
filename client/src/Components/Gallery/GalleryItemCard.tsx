@@ -12,7 +12,7 @@ type GalleryItemCard = {
 }
 
 const GalleryItemCard = (props: GalleryItemCard): JSX.Element => {
-
+  console.log(props.asset.thumbLink);
   return (
     <AssetDisplay>
       <a 

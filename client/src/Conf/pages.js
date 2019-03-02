@@ -17,14 +17,14 @@ const pages = [
     path: '/home',  componentRef: Home, 
     inMenu: false 
   },
+  { id: 'gallery ', displayName: 'Gallery ',
+    path: '/gallery', componentRef: Gallery, 
+    inMenu: true, icon: 'camera-o' 
+  },
   { 
     id: 'animations', displayName: 'Animations', 
     path: '/animations', componentRef: Animations, 
     inMenu: true, icon: 'desktop' 
-  },
-  { id: 'gallery ', displayName: 'Gallery ',
-    path: '/gallery', componentRef: Gallery, 
-    inMenu: true, icon: 'camera-o' 
   },
   { 
     id: 'about', displayName: 'About', 
@@ -36,7 +36,6 @@ const pages = [
     path: '/eula', componentRef: Eula, 
     inMenu: true, icon: 'profile' 
   },
-
   { 
     id: 'admin', name: 'admin', 
     path: '/admin', componentRef: Admin, 

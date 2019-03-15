@@ -10,6 +10,8 @@ const MAX_ASSET_HEIGHT = 1080;
 const MAX_THUMB_WIDTH = 300;
 const MAX_THUMB_HEIGHT = 300;
 
+const CACHE_MAX_AGE = 365 * 24 * 60 * 60;
+
 const ASSET_BUCKET = "noamr-web-gallery";
 const THUMB_BUCKET = "noamr-web-gallery-thumb";
 const ITEMS_PREFIX = "items";
@@ -65,7 +67,8 @@ exports.handler = function(event, context) {
 		function tranformAsset(response, next) {
 			const origBuffer = response.Body;
 			const contentType = response.ContentType;
-			gm(origBuffer).size(function(err, size) {
+			gm(origBuffer)
+			.size(function(err, size) {
 				// Infer the scaling factor to avoid stretching the image unnaturally.
 				const scalingFactor = Math.min(
 					MAX_ASSET_WIDTH / size.width,
@@ -80,7 +83,7 @@ exports.handler = function(event, context) {
 						if (err) {
 							next(err);
 						} else {
-							next(null, { origBuffer, assetBuffer, contentType });
+							next(null, { assetBuffer, contentType });
 						}
 					});
 			});
@@ -92,6 +95,7 @@ exports.handler = function(event, context) {
 				Key: dstKey,
 				Body: assetBuffer,
 				ContentType: contentType,
+				CacheControl: `max-age=${CACHE_MAX_AGE}`,
 			};
 			console.log("uploadOrig", s3Asset);
 			s3.putObject(s3Asset ,next);
@@ -122,7 +126,9 @@ exports.handler = function(event, context) {
 		function tranformThumb(response, next) {
 			const origBuffer = response.Body;
 			const contentType = response.ContentType;
-			gm(origBuffer).size(function(err, size) {
+			gm(origBuffer)
+			.noProfile()
+			.size(function(err, size) {
 				// Infer the scaling factor to avoid stretching the image unnaturally.
 				const scalingFactor = Math.min(
 					MAX_THUMB_WIDTH / size.width,
@@ -148,7 +154,8 @@ exports.handler = function(event, context) {
 				Bucket: THUMB_BUCKET,
 				Key: dstKey,
 				Body: thumbBuffer,
-				ContentType: contentType
+				ContentType: contentType,
+				CacheControl: `max-age=${CACHE_MAX_AGE}`,
 			};
 			console.log("uploadThumb", s3Thumb);
 			s3.putObject(s3Thumb, next);

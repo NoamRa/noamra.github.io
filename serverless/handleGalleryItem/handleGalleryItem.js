@@ -96,6 +96,7 @@ exports.handler = function(event, context) {
 				Body: assetBuffer,
 				ContentType: contentType,
 				CacheControl: `max-age=${CACHE_MAX_AGE}`,
+				ACL: 'public-read',
 			};
 			console.log("uploadOrig", s3Asset);
 			s3.putObject(s3Asset ,next);
@@ -156,6 +157,7 @@ exports.handler = function(event, context) {
 				Body: thumbBuffer,
 				ContentType: contentType,
 				CacheControl: `max-age=${CACHE_MAX_AGE}`,
+				ACL: 'public-read',
 			};
 			console.log("uploadThumb", s3Thumb);
 			s3.putObject(s3Thumb, next);

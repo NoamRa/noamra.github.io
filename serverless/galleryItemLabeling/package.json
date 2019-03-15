@@ -1,0 +1,11 @@
+{
+  "name": "galleryitemlabeling",
+  "version": "1.0.0",
+  "description": "label image / video with AWS Rekognition and store in DynamoDb",
+  "main": "galleryItemLabeling.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NoamR",
+  "license": "MIT"
+}

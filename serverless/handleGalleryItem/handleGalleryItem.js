@@ -70,12 +70,23 @@ exports.handler = function(event, context) {
 			gm(origBuffer)
 			.size(function(err, size) {
 				// Infer the scaling factor to avoid stretching the image unnaturally.
+				if (err) {
+					next(err);
+				}
 				const scalingFactor = Math.min(
 					MAX_ASSET_WIDTH / size.width,
 					MAX_ASSET_HEIGHT / size.height
 				);
-				const width = scalingFactor * size.width;
-				const height = scalingFactor * size.height;
+				
+				let width, height;
+				if (scalingFactor >= 1) { // skip resize if scalingFactor is larger than one.
+					console.log("Asset is small and doesn't need to be scaled down.");
+					width = size.width;
+					height = size.height;
+				} else {
+					width = scalingFactor * size.width;
+					height = scalingFactor * size.height;
+				}
 
 				// Transform the image buffer in memory.
 				this.resize(width, height)
@@ -131,6 +142,9 @@ exports.handler = function(event, context) {
 			.noProfile()
 			.size(function(err, size) {
 				// Infer the scaling factor to avoid stretching the image unnaturally.
+				if (err) {
+					next(err);
+				}
 				const scalingFactor = Math.min(
 					MAX_THUMB_WIDTH / size.width,
 					MAX_THUMB_HEIGHT / size.height

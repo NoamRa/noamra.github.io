@@ -56,11 +56,12 @@ const getImageMetadata = (buffer) => {
           }
         });
         const metadata = { 
-          dim: data.size,
-          properties,
+          width: data.size.width,
+          height: data.size.height,
           created: getCreationDate(data.Properties),
+          properties,
         };
-        console.log(`metadata - width: ${metadata.dim.width}, height: ${metadata.dim.height}, created: ${metadata.created}`);
+        console.log(`metadata - width: ${metadata.width}, height: ${metadata.height}, created: ${metadata.created}`);
         resolve(metadata);
       }
       else {
@@ -77,7 +78,13 @@ const addRekognitionToRecord = (rekognitionData) => {
 };
 
 const addToDataTable = () => {
-  tableRecord.assetId = srcKey.split("/").pop();
+  // get table's primary key (collectionId) and sort key (assetId).
+  const splitedKey = srcKey.split("/");
+  const collectionId = splitedKey.length === 2 ? "misc" : splitedKey[1];
+  const assetId = splitedKey[splitedKey.length-1];
+  
+  tableRecord.collectionId = collectionId;
+  tableRecord.assetId = assetId;
   tableRecord.assetBucket = bucket;
   tableRecord.assetKey = srcKey;
   

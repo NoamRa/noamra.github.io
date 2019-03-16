@@ -2,7 +2,7 @@ const async = require("async");
 const AWS = require("aws-sdk");
 const gm = require("gm").subClass({ imageMagick: true }); // Enable ImageMagick integration.
 const util = require("util");
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require("uuid/v4");
 
 // constants
 const MAX_ASSET_WIDTH = 1920;
@@ -96,7 +96,7 @@ exports.handler = function(event, context) {
 				Body: assetBuffer,
 				ContentType: contentType,
 				CacheControl: `max-age=${CACHE_MAX_AGE}`,
-				ACL: 'public-read',
+				ACL: "public-read",
 			};
 			console.log("uploadOrig", s3Asset);
 			s3.putObject(s3Asset ,next);
@@ -157,7 +157,7 @@ exports.handler = function(event, context) {
 				Body: thumbBuffer,
 				ContentType: contentType,
 				CacheControl: `max-age=${CACHE_MAX_AGE}`,
-				ACL: 'public-read',
+				ACL: "public-read",
 			};
 			console.log("uploadThumb", s3Thumb);
 			s3.putObject(s3Thumb, next);

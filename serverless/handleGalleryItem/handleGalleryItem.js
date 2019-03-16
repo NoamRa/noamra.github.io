@@ -1,6 +1,6 @@
 const async = require("async");
 const AWS = require("aws-sdk");
-const gm = require("gm").subClass({ imageMagick: true }); // Enable ImageMagick integration.
+const gm = require("gm").subClass({ imageMagick: true });
 const util = require("util");
 const uuidv4 = require("uuid/v4");
 

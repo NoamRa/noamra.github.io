@@ -4,8 +4,12 @@
   "description": "label image / video with AWS Rekognition and store in DynamoDb",
   "main": "galleryItemLabeling.js",
   "scripts": {
+    "bundle": "7z -tzip a galleryItemLabeling.zip -r galleryItemLabeling.js node_modules",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "NoamR",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "gm": "^1.23.1"
+  }
 }

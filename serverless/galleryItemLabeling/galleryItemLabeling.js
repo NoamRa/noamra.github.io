@@ -1,21 +1,15 @@
 const AWS = require("aws-sdk");
+const s3 = new AWS.S3();
+const gm = require("gm").subClass({ imageMagick: true });
 const rekognition = new AWS.Rekognition();
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-const MAX_LABELS = 7;
+const MAX_LABELS = 20;
 const MIN_CONFIDENCE = 80;
 const DYNAMO_TABLE_NAME = "noamr-web-gallery";
-const S3Prefix = "https://s3.amazonaws.com/";
 
 let lambdaCallback, bucket, srcKey;
-
-const constructUrlFromS3 = (bucket, key) => (
-  `${S3Prefix}${bucket}/${key}`
-);
-
-const resolveThumbUrl = (url, bucketName) => (
-  url.replace(bucketName, `${bucketName}-thumb`)
-);
+let tableRecord = {};
 
 const rekognizeLabels = () => {
   const params = {
@@ -32,24 +26,64 @@ const rekognizeLabels = () => {
   return rekognition.detectLabels(params).promise();
 };
 
-const addToDataTable = (data) => {
-  console.log("raw data:", data);
-  console.log("bucket:", bucket);
-  console.log("srcKey:", srcKey);
+const getCreationDate = (exif) => {
+  if (exif["exif:DateTimeOriginal"]) {
+    return exif["exif:DateTimeOriginal"];
+  } 
+  else if (exif["exif:DateTimeDigitized"]) {
+    return exif["exif:DateTimeDigitized"];
+  }
+};
 
-  const imageId = srcKey.split("/").pop();
-  const assetLink = constructUrlFromS3(bucket, srcKey);
-  const thumbLink = resolveThumbUrl(assetLink, bucket);
-  const labels = data.Labels.map(lbl => lbl.Name);
+const getImageMetadata = (buffer) => {
+  return new Promise((resolve, reject) => {
+    gm(buffer)
+    .identify((err, data) => {
+      if (!err && data && typeof data === "object") {
+        let properties = {};
+        Object.entries(data.Properties).forEach(([key, value]) => {
+          if (key.includes(":")) {
+            const splt = key.split(":");
+            const major = splt[0];
+            const minor = splt[1];
+            if (!properties[major]) {
+              properties[major] = {};
+            }
+            properties[major][minor] = value;
+          } 
+          else {
+            properties[key] = value;
+          }
+        });
+        const metadata = { 
+          dim: data.size,
+          properties,
+          created: getCreationDate(data.Properties),
+        };
+        console.log(`metadata - width: ${metadata.dim.width}, height: ${metadata.dim.height}, created: ${metadata.created}`);
+        resolve(metadata);
+      }
+      else {
+        console.log("getImageMetadata had error", err);
+        reject({error: err});
+      }
+    });
+  });
+};
+
+const addRekognitionToRecord = (rekognitionData) => {
+  const labels = rekognitionData.Labels.map(lbl => lbl.Name);
+  tableRecord.labels = labels;
+};
+
+const addToDataTable = () => {
+  tableRecord.assetId = srcKey.split("/").pop();
+  tableRecord.assetBucket = bucket;
+  tableRecord.assetKey = srcKey;
   
   const params = {
     TableName: DYNAMO_TABLE_NAME,
-    Item: {
-      imageId,
-      assetLink,
-      thumbLink,
-      labels,
-    }
+    Item: tableRecord
   };
 
   console.log("params:", params);
@@ -63,8 +97,26 @@ exports.handler = function(event, context, callback) {
   srcKey = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, " "));
   
   rekognizeLabels()
-  .then((data) => {
-    addToDataTable(data);
+  .then(data => {
+    addRekognitionToRecord(data);
+  })
+  .then(() => {
+    const s3Location = {
+      Bucket: bucket,
+      Key: srcKey
+    };
+    return s3.getObject(s3Location).promise();
+  })
+  .then((resp) => {
+    const metadata = getImageMetadata(resp.Body);   
+    return metadata;
+  })
+  .then((metadata) => {
+    tableRecord = { ...tableRecord, ...metadata };
+    return tableRecord;
+  })
+  .then(() => {
+    addToDataTable();
   })
   .then((resp) => {
     console.log(`Data added to ${DYNAMO_TABLE_NAME} Table`);
@@ -74,4 +126,3 @@ exports.handler = function(event, context, callback) {
     lambdaCallback(err, null);
   });
 };
-

@@ -3,12 +3,28 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 const TABLE_NAME = "noamr-web-gallery";
 
-exports.handler = function(event, context, callback) {
-  console.log(event);
-  const qParms = event.queryStringParameters;
+const buildResponse = (data) => {
+    return {
+        statusCode: "200",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Origin": "*"
+        }
+    };
+};
 
-  if (qParms && qParms.collectionId) { // query collectionId
-    console.log("requested collectionId:", qParms.collectionId);
+exports.handler = (event, context, callback) => {
+  // console.log(event);
+  if (event.httpMethod !== "GET"){
+    callback("Only GET method is supported");
+  }
+
+  const pathParms = event.pathParameters;
+
+  if (pathParms && pathParms.collectionId) { // query collectionId
+    console.log("requested collectionId:", pathParms.collectionId);
     const queryParams = {
       TableName: TABLE_NAME,
       KeyConditionExpression: "#colId = :collectionId",
@@ -16,17 +32,16 @@ exports.handler = function(event, context, callback) {
         "#colId": "collectionId",
       },
       ExpressionAttributeValues: {
-        ":collectionId": qParms.collectionId,
+        ":collectionId": pathParms.collectionId,
       },
     };
     docClient.query(queryParams, (err, data) => {
       if (err) {
-        console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
         callback(err);
       }
       else {
         console.log("query data:", data);
-        callback(null, data);
+        callback(null, buildResponse(data));
       }
     });
   }
@@ -39,12 +54,11 @@ exports.handler = function(event, context, callback) {
     };
     docClient.scan(scanParams, (err, data) => {
       if (err) {
-        console.error("Unable to scan. Error:", JSON.stringify(err, null, 2));
         callback(err);
       }
       else {
         console.log("scan data:", data);
-        callback(null, data);
+        callback(null, buildResponse(data));
       }
     });
   }

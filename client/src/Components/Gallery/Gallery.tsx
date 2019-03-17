@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import GalleryItemCard from "./GalleryItemCard";
-import { getAllImages, AssetData, initAssetData } from "../../Logic/gallery";
+import { getAllImages, AssetData, CollectionAggregation } from "../../Logic/gallery";
 
 type GalleryProps = {
-  assetsData?: AssetData[]
+  // assetsData?: AssetData[]
+}
+
+type GalleryState = { 
+  assetsData: AssetData[], 
+  collectionStats: CollectionAggregation 
 }
 
 const AssetWapper = styled.section`
@@ -13,8 +18,12 @@ const AssetWapper = styled.section`
 `;
 
 const Gallery: React.FunctionComponent<GalleryProps> = (): JSX.Element => {
+  const initState = () => ({
+    assetsData: [],
+    collectionStats: {},
+  });
 
-  const [ assetsData, setImages ] = useState<AssetData[]>([initAssetData()]);
+  const [ { assetsData, collectionStats }, setImages ] = useState<GalleryState>(initState());
   const fetchImages = async () => {
     const assetsData = await getAllImages();
     setImages(assetsData);
@@ -37,8 +46,7 @@ const Gallery: React.FunctionComponent<GalleryProps> = (): JSX.Element => {
         }
       </AssetWapper>
     </React.Fragment>
-  )
-
+  );
 };
 
 export default Gallery;

@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import GalleryItemCard from "./GalleryItemCard";
-import { getAllImages, AssetData, CollectionAggregation } from "../../Logic/gallery";
+import { getAllImages, AssetData, CollectionMetadata } from "../../Logic/gallery";
 
-type GalleryProps = {
-  // assetsData?: AssetData[]
-}
+type GalleryProps = {};
 
 type GalleryState = { 
   assetsData: AssetData[], 
-  collectionStats: CollectionAggregation 
-}
+  collectionMetadata: CollectionMetadata, 
+};
 
 const AssetWapper = styled.section`
   display: flex;
@@ -20,10 +18,13 @@ const AssetWapper = styled.section`
 const Gallery: React.FunctionComponent<GalleryProps> = (): JSX.Element => {
   const initState = () => ({
     assetsData: [],
-    collectionStats: {},
+    collectionMetadata: {
+      labelRefrences: {},
+      collectionIds: {},
+    },
   });
 
-  const [ { assetsData, collectionStats }, setImages ] = useState<GalleryState>(initState());
+  const [ { assetsData, collectionMetadata }, setImages ] = useState<GalleryState>(initState());
   const fetchImages = async () => {
     const assetsData = await getAllImages();
     setImages(assetsData);

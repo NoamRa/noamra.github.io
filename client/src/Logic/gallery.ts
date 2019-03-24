@@ -34,8 +34,17 @@ type DynamoDBResp = {
   ScannedCount: number,
 };
 
-export type CollectionAggregation = {
+export type LabelReference = {
+  [label: string]: string[],
+};
+
+export type CollectionIds = {
   [collectionId: string]: number,
+};
+
+export type CollectionMetadata = {
+  labelRefrences: LabelReference,
+  collectionIds: CollectionIds,
 };
 
 export type AssetData = {
@@ -50,19 +59,32 @@ export type AssetData = {
   thumbLink: string | undefined,
 };
 
-const aggragateCollection = (items: AssetItem[]): CollectionAggregation => {
-  let collections: CollectionAggregation = {};
+const aggragateCollection = (items: AssetItem[]): CollectionMetadata => {
+  let collectionIds: CollectionIds = {};
+  let labelRefrences: LabelReference = {};
   items.forEach((item: AssetItem) => {
     const { collectionId } = item;
-    if (collections.hasOwnProperty(collectionId)) {
-      collections[collectionId] += 1;
+    if (collectionIds.hasOwnProperty(collectionId)) {
+      collectionIds[collectionId] += 1;
     }
     else {
-      collections[collectionId] = 1;
+      collectionIds[collectionId] = 1;
     }
+
+    item.labels.forEach(lbl => {
+      if (labelRefrences.hasOwnProperty(lbl)) {
+        labelRefrences[lbl].push(item.assetId);
+      } 
+      else {
+        labelRefrences[lbl] = [item.assetId];
+      }
+    })
   });
 
-  return collections;
+  return {
+    collectionIds,
+    labelRefrences
+  };
 };
 
 const transformAssetData = (assetItem: AssetItem): AssetData => {
@@ -96,11 +118,11 @@ export const getAllImages = () => {
   return fetch(getGalleryItemsURL, options)
   .then(response => response.json())
   .then((data: DynamoDBResp) => {
-    const aggragatedCollectionIds: CollectionAggregation = aggragateCollection(data.Items);
+    const collectionMetadata: CollectionMetadata = aggragateCollection(data.Items);
     const transformedAssetsData: AssetData[] = data.Items.map(transformAssetData);
     return {
-      collectionStats: aggragatedCollectionIds,
-      assetsData: transformedAssetsData
+      collectionMetadata: collectionMetadata,
+      assetsData: transformedAssetsData,
     };
   })
   .catch((err) => {

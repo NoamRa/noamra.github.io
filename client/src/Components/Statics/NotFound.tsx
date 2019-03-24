@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 const NotFound = () => {
   return (
     <div>
       Move along, nothing to see here... <br/>
-      <a href='/'>Go Home</a>
+      <a href="/">Go Home</a>
     </div>
   )
 

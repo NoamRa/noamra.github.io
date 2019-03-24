@@ -2,7 +2,8 @@ import React from 'react';
 
 const Eula = () => {
   return (
-    <div >
+    <React.Fragment>
+      <h2>EULA</h2>
       <p>
         <a 
           href="https://xkcd.com/1998/" 
@@ -13,7 +14,7 @@ const Eula = () => {
         </a>
       </p>
       <p>
-        source:&nbsp;
+        Source:&nbsp;
         <a 
           href="https://xkcd.com/1998/" 
           target="_blank"
@@ -22,7 +23,7 @@ const Eula = () => {
           https://xkcd.com/1998/
         </a>
       </p>
-    </div>
+    </React.Fragment>
   )
 
 };

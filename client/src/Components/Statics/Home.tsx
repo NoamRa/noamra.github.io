@@ -4,7 +4,8 @@ const Home = () => {
 
   return (
     <div>
-        Home Page
+        Hi,<br/>
+        The site is still under construction, but feel free to look around. :)
     </div>
   )
 

@@ -4,7 +4,8 @@ import "./Animations.css"
 
 const Animations = () => {
   return (
-    <div>
+    <React.Fragment>
+      <h4>Animations</h4>
       <div className="animation-entry">
         <br/>
         <div>
@@ -51,7 +52,7 @@ const Animations = () => {
           <a href="http://xkcd.com" target="_blank" rel="noreferrer noopener">http://xkcd.com</a><br/>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   )
 
 };

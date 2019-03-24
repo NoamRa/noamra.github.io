@@ -34,7 +34,7 @@ const Gallery: React.FunctionComponent<GalleryProps> = (): JSX.Element => {
 
   return (
     <React.Fragment>
-      Gallery
+      <h4>Gallery</h4>
       <AssetWapper>
         {
           assetsData.map((asset: AssetData) => (

@@ -1,0 +1,12 @@
+.hidden-smile:hover::after {
+  content:' :)';
+}
+
+.contacts {
+  list-style: none;
+  padding-left: 0;
+}
+
+.contact-text {
+  padding-left: 0.4em;
+}

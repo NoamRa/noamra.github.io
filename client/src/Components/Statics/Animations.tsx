@@ -2,7 +2,7 @@ import React from "react";
 import ReactPlayer from "react-player"
 import "./Animations.css"
 
-const Animations: Reach.FC = () => {
+const Animations: React.FC = () => {
   return (
     <React.Fragment>
       <h4>Animations</h4>

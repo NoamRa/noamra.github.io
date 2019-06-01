@@ -1,6 +1,6 @@
 import React from "react";
 
-const Admin: Reach.FC = () => {
+const Admin: React.FC = () => {
   return (
     <div >
       Admin

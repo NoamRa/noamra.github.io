@@ -3,7 +3,7 @@ import { Icon } from "antd";
 import contactList, { Contact } from "../../Conf/contacts";
 import "./About.css";
 
-const About: Reach.FC = (): JSX.Element => {
+const About: React.FC = (): JSX.Element => {
   return (
     <React.Fragment>
       <h4>About</h4>

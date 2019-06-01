@@ -13,7 +13,7 @@ type GalleryItemCard = {
 
 const GalleryItemCard = (props: GalleryItemCard): JSX.Element => {
   return (
-    <AssetDisplay>
+    // <AssetDisplay>
       <a 
         href={props.asset.assetLink} 
         target="_blank"
@@ -23,7 +23,7 @@ const GalleryItemCard = (props: GalleryItemCard): JSX.Element => {
           src={props.asset.thumbLink}
         />
       </a>
-    </AssetDisplay>
+    // </AssetDisplay>
   )
 
 };

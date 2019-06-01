@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Eula = () => {
+const Eula: Reach.FC = () => {
   return (
     <React.Fragment>
       <h2>EULA</h2>

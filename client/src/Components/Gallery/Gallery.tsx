@@ -20,7 +20,7 @@ const Row = styled.section`
   display: flex;
 `;
 
-const Gallery: React.FunctionComponent<GalleryProps> = (): JSX.Element => {
+const Gallery: React.FC<GalleryProps> = (): JSX.Element => {
   const initState = () => ({
     assetsData: [],
     collectionMetadata: {

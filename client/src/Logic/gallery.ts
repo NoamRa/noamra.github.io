@@ -1,6 +1,8 @@
 import { getGalleryItemsURL, galleryAssets, galleryThumbs } from "../Conf/api";
 import { number } from "prop-types";
 
+const MAX_EDGE = 300;
+
 type Exif = {
   ExposureTime: string;
   FNumber: string;
@@ -58,6 +60,10 @@ export type AssetData = {
   exif: FormattedExif;
   assetLink: string;
   thumbLink: string;
+  scalingFactor?: number;
+  thumbWidth?: number;
+  thumbHeight?: number;
+  ratio?: number;
 };
 
 export type GalleryData = {
@@ -139,7 +145,7 @@ export const getAllImages = (): Promise<GalleryData> => {
 };
 
 const calcThumbDimensions = (width: number, height: number) => {
-  const MAX_EDGE = 300;
+  
   const scalingFactor: number = Math.min(MAX_EDGE / width, MAX_EDGE / height);
   const thumbWidth: number = scalingFactor * width;
   const thumbHeight: number = scalingFactor * height;
@@ -151,14 +157,14 @@ const calcThumbDimensions = (width: number, height: number) => {
   };
 };
 
-type MinMax = { max: number; min: number };
-const getRowHeight = (row: AssetData[]): MinMax =>
+export type MinMax = { max: number; min: number };
+const getRowMinMax = (row: AssetData[]): MinMax =>
   row.reduce(
     (acc: MinMax, curr: AssetData) => ({
-      max: Math.max(acc.max, curr.height),
-      min: Math.min(acc.min, curr.height)
+      max: Math.max(acc.max, curr.thumbHeight!),
+      min: Math.min(acc.min, curr.thumbHeight!)
     }),
-    { max: 0, min: 0 }
+    { max: 0, min: MAX_EDGE }
   );
 
 export const calcJustifiedGallery = (
@@ -169,13 +175,15 @@ export const calcJustifiedGallery = (
   let row: AssetData[] = [];
   let currentWidth: number = 0;
 
-  collectionMeta.forEach((asset: AssetData) => {
-    let currentPhoto = calcThumbDimensions(asset.width, asset.height);
+  const collectionMetaWithThumb = collectionMeta.map((asset: AssetData) => ({
+    ...asset,
+    ...calcThumbDimensions(asset.width, asset.height)
+  }));
+  collectionMetaWithThumb.forEach((asset: AssetData) => {
     row.push(asset);
-    currentWidth += Math.round(
-      (300 / currentPhoto.thumbHeight) * currentPhoto.thumbWidth
-    );
+    currentWidth += Math.round((MAX_EDGE / asset.thumbHeight!) * asset.thumbWidth!);
     if (currentWidth >= viewportWidth) {
+      const test = getRowMinMax(row);
       rows.push(row);
       row = [];
       currentWidth = 0;

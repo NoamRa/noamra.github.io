@@ -1,62 +1,62 @@
 import { getGalleryItemsURL, galleryAssets, galleryThumbs } from "../Conf/api";
 
 type Exif = {
-  ExposureTime: string,
-  FNumber: string,
-  FocalLengthIn35mmFilm: string,
-  ISOSpeedRatings: string,
+  ExposureTime: string;
+  FNumber: string;
+  FocalLengthIn35mmFilm: string;
+  ISOSpeedRatings: string;
 };
 
 type FormattedExif = {
-  "Focal length": string,
-  "Shutter speed": string,
-  "Aperture": string,
-  "ISO": string,
+  "Focal length": string;
+  "Shutter speed": string;
+  Aperture: string;
+  ISO: string;
 };
 
 type AssetItem = {
-  assetBucket: string,
-  assetId: string
-  assetKey: string,
-  collectionId: string,
-  created: string,
-  height: number
-  labels: string[]
-  properties: { 
-    exif: Exif,
-  },
-  width: number,
+  assetBucket: string;
+  assetId: string;
+  assetKey: string;
+  collectionId: string;
+  created: string;
+  height: number;
+  labels: string[];
+  properties: {
+    exif: Exif;
+  };
+  width: number;
 };
 
-type DynamoDBResp = { 
-  Count: number,
-  Items: AssetItem[],
-  ScannedCount: number,
+type DynamoDBResp = {
+  Count: number;
+  Items: AssetItem[];
+  ScannedCount: number;
 };
 
 export type LabelReference = {
-  [label: string]: string[],
+  [label: string]: string[];
 };
 
 export type CollectionIds = {
-  [collectionId: string]: number,
+  [collectionId: string]: number;
 };
 
 export type CollectionMetadata = {
-  labelRefrences: LabelReference,
-  collectionIds: CollectionIds,
+  labelRefrences: LabelReference;
+  collectionIds: CollectionIds;
 };
 
 export type AssetData = {
-  id: string | undefined,
-  collectionId: string | undefined,
-  height: number | undefined,
-  width: number | undefined,
-  created: string | undefined,
-  labels: string [] | undefined,
-  exif: FormattedExif | undefined,
-  assetLink: string | undefined,
-  thumbLink: string | undefined,
+  id: string | undefined;
+  collectionId: string | undefined;
+  height: number | undefined;
+  width: number | undefined;
+  created: string | undefined;
+  labels: string[] | undefined;
+  exif: FormattedExif | undefined;
+  assetLink: string | undefined;
+  thumbLink: string | undefined;
 };
 
 const aggragateCollection = (items: AssetItem[]): CollectionMetadata => {
@@ -66,19 +66,17 @@ const aggragateCollection = (items: AssetItem[]): CollectionMetadata => {
     const { collectionId } = item;
     if (collectionIds.hasOwnProperty(collectionId)) {
       collectionIds[collectionId] += 1;
-    }
-    else {
+    } else {
       collectionIds[collectionId] = 1;
     }
 
     item.labels.forEach(lbl => {
       if (labelRefrences.hasOwnProperty(lbl)) {
         labelRefrences[lbl].push(item.assetId);
-      } 
-      else {
+      } else {
         labelRefrences[lbl] = [item.assetId];
       }
-    })
+    });
   });
 
   return {
@@ -91,8 +89,8 @@ const transformAssetData = (assetItem: AssetItem): AssetData => {
   const exif: FormattedExif = {
     "Focal length": assetItem.properties.exif.ExposureTime,
     "Shutter speed": assetItem.properties.exif.ExposureTime,
-    "Aperture": assetItem.properties.exif.FNumber,
-    "ISO": assetItem.properties.exif.ISOSpeedRatings,
+    Aperture: assetItem.properties.exif.FNumber,
+    ISO: assetItem.properties.exif.ISOSpeedRatings
   };
 
   const assetLink: string = `https://${galleryAssets}/${assetItem.assetKey}`;
@@ -107,26 +105,29 @@ const transformAssetData = (assetItem: AssetItem): AssetData => {
     labels: assetItem.labels,
     exif,
     assetLink,
-    thumbLink,
+    thumbLink
   };
 };
 
 export const getAllImages = () => {
   const options: object = {
-    method: "GET",
+    method: "GET"
   };
   return fetch(getGalleryItemsURL, options)
-  .then(response => response.json())
-  .then((data: DynamoDBResp) => {
-    const collectionMetadata: CollectionMetadata = aggragateCollection(data.Items);
-    const transformedAssetsData: AssetData[] = data.Items.map(transformAssetData);
-    return {
-      collectionMetadata: collectionMetadata,
-      assetsData: transformedAssetsData,
-    };
-  })
-  .catch((err) => {
-    throw err;
-  });
+    .then(response => response.json())
+    .then((data: DynamoDBResp) => {
+      const collectionMetadata: CollectionMetadata = aggragateCollection(
+        data.Items
+      );
+      const transformedAssetsData: AssetData[] = data.Items.map(
+        transformAssetData
+      );
+      return {
+        collectionMetadata: collectionMetadata,
+        assetsData: transformedAssetsData
+      };
+    })
+    .catch(err => {
+      throw err;
+    });
 };
-

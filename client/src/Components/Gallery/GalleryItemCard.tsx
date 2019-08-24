@@ -17,6 +17,7 @@ const GalleryItemCard = (props: GalleryItemCard): JSX.Element => {
       <a 
         href={props.asset.assetLink} 
         target="_blank"
+        rel="noopener noreferrer"
       >
         <img 
           alt={props.asset.thumbLink}

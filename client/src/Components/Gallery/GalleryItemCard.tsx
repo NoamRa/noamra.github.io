@@ -15,12 +15,13 @@ const GalleryItemCard = (props: GalleryItemCard): JSX.Element => {
   return (
     <AssetDisplay>
       <a 
-        href={props.asset.assetLink} 
+        href={props.asset.src} 
         target="_blank"
+        rel="noopener noreferrer"
       >
         <img 
-          alt={props.asset.thumbLink}
-          src={props.asset.thumbLink}
+          alt={props.asset.thumbnail}
+          src={props.asset.thumbnail}
         />
       </a>
     </AssetDisplay>

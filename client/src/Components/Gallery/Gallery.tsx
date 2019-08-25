@@ -10,7 +10,9 @@ import {
 } from "../../Logic/gallery";
 import GridGallery from "react-grid-gallery";
 import { Switch, Button } from "antd";
-import Tags from "../Common/Tags";
+import Tags from "./GalleryTags";
+
+export type LabelAndAmount = { label: string; amount: number };
 
 type GalleryProps = {};
 
@@ -23,15 +25,14 @@ const Gallery: React.FunctionComponent<GalleryProps> = (): JSX.Element => {
     }
   });
 
-  const [allLabels, setAllLabels] = useState<string[]>([]);
-  const sortLables = (labelRefrences: LabelReference): string[] => {
-    const sorted: string[] = Object.entries(labelRefrences)
+  const [allLabels, setAllLabels] = useState<LabelAndAmount[]>([]);
+  const sortLables = (labelRefrences: LabelReference): LabelAndAmount[] => {
+    const sorted: LabelAndAmount[] = Object.entries(labelRefrences)
       .map(([label, imageIds]) => ({
         label,
         amount: imageIds.length
       }))
-      .sort((a, b) => b.amount - a.amount || a.label.localeCompare(b.label))
-      .map(({ label, amount }) => label);
+      .sort((a, b) => b.amount - a.amount || a.label.localeCompare(b.label));
     return sorted;
   };
 
@@ -49,7 +50,7 @@ const Gallery: React.FunctionComponent<GalleryProps> = (): JSX.Element => {
   );
 
   const clearLables = () => {
-    setIncludedLabels(new Set(allLabels));
+    setIncludedLabels(new Set(allLabels.map(({ label }) => label)));
   };
 
   const includeAllLabels = () => {
@@ -70,7 +71,7 @@ const Gallery: React.FunctionComponent<GalleryProps> = (): JSX.Element => {
     const galleryData = await getAllImages();
 
     const allLabels = sortLables(galleryData.collectionMetadata.labelRefrences);
-    const includedLabels = new Set(allLabels);
+    const includedLabels = new Set(allLabels.map(({ label }) => label));
     setAllLabels(allLabels);
     setIncludedLabels(includedLabels);
     setImages(galleryData);
@@ -84,17 +85,11 @@ const Gallery: React.FunctionComponent<GalleryProps> = (): JSX.Element => {
     <>
       <h4>Gallery</h4>
       <div>
-        <div>
-          Labels by AWS Rekognition, sorted by quantity
-        </div>
+        <div>Labels by AWS Rekognition, sorted by quantity</div>
         <div>
           <Button
             type="primary"
-            onClick={
-              includedLabels.size === 0
-                ? clearLables
-                : includeAllLabels
-            }
+            onClick={includedLabels.size === 0 ? clearLables : includeAllLabels}
           >
             {includedLabels.size === 0 ? "use all labels" : "clear all labels"}
           </Button>

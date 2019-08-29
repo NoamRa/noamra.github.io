@@ -2,6 +2,7 @@
 *.psd
 *.sublime-project
 *.sublime-workspace
+*.code-workspace
 client/noamr-web/package-lock.json
 aws-notes.txt
 *.zip

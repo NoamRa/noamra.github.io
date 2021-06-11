@@ -9,3 +9,5 @@ aws-notes.txt
 .parcel-cache
 dist
 node_modules
+/client/build
+/client/develop

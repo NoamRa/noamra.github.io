@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "devlop": "parcel serve ./src/index.html --dist-dir ./develop",
-    "build": "parcel build ./src/index.html --dist-dir ./build"
+    "devlop": "parcel serve ./src/index.html --dist-dir './develop'",
+    "build": "parcel build ./src/index.html --dist-dir './build'"
   },
   "keywords": [],
   "author": "",

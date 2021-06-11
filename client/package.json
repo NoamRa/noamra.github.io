@@ -4,8 +4,8 @@
   "description": "website - client side",
   "main": "index.html",
   "scripts": {
-    "devlop": "parcel serve ./src/index.html --dist-dir './develop'",
-    "build": "parcel build ./src/index.html --dist-dir './build'"
+    "develop": "parcel serve ./src/index.html",
+    "build": "parcel build ./src/index.html"
   },
   "keywords": [],
   "author": "NoamR",

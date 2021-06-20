@@ -1,5 +1,8 @@
 import { getGalleryItemsURL, galleryAssets, galleryThumbs } from "../Conf/api";
 
+export const MAX_THUMB_WIDTH = 300;
+const MAX_THUMB_HEIGHT = MAX_THUMB_WIDTH;
+
 type Exif = {
   ExposureTime: string;
   FNumber: string;
@@ -47,6 +50,11 @@ export type CollectionMetadata = {
   collectionIds: CollectionIds;
 };
 
+export type GalleryData = {
+  assetsData: AssetData[];
+  collectionMetadata: CollectionMetadata;
+};
+
 export type AssetData = {
   id: string | undefined;
   collectionId: string | undefined;
@@ -55,8 +63,26 @@ export type AssetData = {
   created: string | undefined;
   labels: string[] | undefined;
   exif: FormattedExif | undefined;
-  assetLink: string | undefined;
-  thumbLink: string | undefined;
+  src: string | undefined;
+  thumbnail: string | undefined;
+  thumbnailWidth: number | undefined;
+  thumbnailHeight: number | undefined;
+};
+
+export type Dimentions = {
+  width: number;
+  height: number;
+};
+
+const calcThumbDimentions = (size: Dimentions): Dimentions => {
+  const scalingFactor: number = Math.min(
+    MAX_THUMB_WIDTH / size.width,
+    MAX_THUMB_HEIGHT / size.height
+  );
+  const width = scalingFactor * size.width;
+  const height = scalingFactor * size.height;
+
+  return { width, height };
 };
 
 const aggragateCollection = (items: AssetItem[]): CollectionMetadata => {
@@ -93,8 +119,12 @@ const transformAssetData = (assetItem: AssetItem): AssetData => {
     ISO: assetItem.properties.exif.ISOSpeedRatings
   };
 
-  const assetLink: string = `https://${galleryAssets}/${assetItem.assetKey}`;
-  const thumbLink: string = `https://${galleryThumbs}/${assetItem.assetKey}`;
+  const src: string = `https://${galleryAssets}/${assetItem.assetKey}`;
+  const thumbnail: string = `https://${galleryThumbs}/${assetItem.assetKey}`;
+  const {
+    width: thumbnailWidth,
+    height: thumbnailHeight
+  } = calcThumbDimentions(assetItem);
 
   return {
     id: assetItem.assetId,
@@ -104,12 +134,14 @@ const transformAssetData = (assetItem: AssetItem): AssetData => {
     created: assetItem.created,
     labels: assetItem.labels,
     exif,
-    assetLink,
-    thumbLink
+    src,
+    thumbnail,
+    thumbnailWidth,
+    thumbnailHeight
   };
 };
 
-export const getAllImages = () => {
+export const getAllImages = (): Promise<GalleryData> => {
   const options: object = {
     method: "GET"
   };

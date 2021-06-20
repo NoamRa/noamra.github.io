@@ -5,3 +5,9 @@
 client/noamr-web/package-lock.json
 aws-notes.txt
 *.zip
+*.code-workspace
+.parcel-cache
+dist
+node_modules
+/client/build
+/client/develop

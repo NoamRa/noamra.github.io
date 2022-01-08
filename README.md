@@ -1,7 +1,7 @@
 noamra.github.io
 ================
 
-This website is an attemt to focus the various things I create and want to share into a single location.
+This website is an attempt to focus the various things I create and want to share into a single location.
 
 
 This page - 

@@ -4,12 +4,6 @@
   src: url("../fonts/sanfranciscodisplay-regular.woff");
 }
 
-.finger-frame {
-  width: 15rem;
-  height: 10rem;
-  background: no-repeat;
-}
-
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -34,8 +28,10 @@ a {
 }
 /* section 1 */
 .section-1 {
-  padding-top: 40vh;
-  text-align: center;
+  padding-top: 30vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .section-1 p {
@@ -128,11 +124,61 @@ a {
   }
   .section-1 {
     padding: 0;
-    padding-top: 5rem;
+    padding-top: 3rem;
   }
   .section-2 {
     padding: 0;
     padding-left: 1.5rem;
     padding-top: 2rem;
   }
+}
+
+/* finger frame */
+.finger-frame {
+  width: 15rem;
+  height: 10rem;
+  position: relative;
+
+  /* vars */
+  --posX: 25%;
+  --posY: 35%;
+}
+
+.finger-frame .finger {
+  will-change: transform;
+  transform-style: preserve-3D;
+  transition: transform 1.2s ease-out;
+  height: 55%;
+  top: 25%;
+  position: absolute;
+}
+
+.finger-frame .finger#left {
+  left: 0;
+  transform:
+    translateX(var(--posX))
+    translateY(calc(var(--posY) * -1));
+}
+
+.finger-frame .finger#right {
+  right: 0;
+  transform:
+    translateX(calc(var(--posX) * -1))
+    translateY(var(--posY))
+    rotateX(0deg)
+    rotateY(0deg)
+    rotateZ(180deg);
+}
+
+.finger-frame:hover .finger#left {
+  transition: transform 0.75s ease-out;
+  transform: rotate(-90deg);
+}
+
+.finger-frame:hover .finger#right {
+  transition: transform 0.85s ease-out; /* just a little bit slower... */
+  transform:
+    rotateX(180deg)
+    rotateY(0deg)
+    rotateZ(90deg);
 }

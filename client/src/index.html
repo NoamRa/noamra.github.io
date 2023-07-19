@@ -6,43 +6,56 @@
     <link rel="stylesheet" type="text/css" href="./styles/style.css" />
     <title>Noam Raby</title>
     <meta http-equiv="content-security-policy" content="" />
+    <link rel="icon" type="image/x-icon" href="./assets/favicon/favicon.ico">
   </head>
   <body>
     <div class="grid-2">
       <div class="section-1">
-        <img
-          class="finger-frame"
-          src="./assets/svg/finger-frame.svg"
-          alt="Two hands gesture - thumb and index extended make a frame"
-          loading="lazy"
-        />
-        <h2>Noam Raby</h2>
-        <a
-          href="https://github.com/noamra"
-          target="_blank"
-          title="GitHub Profile"
-        >
+        <div class="finger-frame">
           <img
-            src="./assets/svg/github.svg"
-            alt="GitHub Profile"
+            class="finger"
+            id="left"
+            src="./assets/svg/finger-frame.svg"
+            alt="Two hands gesture - thumb and index extended make a frame - left hand"
             loading="lazy"
-            width="40px"
-            height="40px"
           />
-        </a>
-        <a
-          href="https://linkedin.com/in/noamraby"
-          target="_blank"
-          title="LinkedIn Profile"
-        >
           <img
-            src="./assets/svg/linkedin.svg"
-            alt="LinkedIn Profile"
+            class="finger"
+            id="right"
+            src="./assets/svg/finger-frame.svg"
+            alt="Two hands gesture - thumb and index extended make a frame - right hand"
             loading="lazy"
-            width="40px"
-            height="40px"
           />
-        </a>
+        </div>
+        <div>
+          <h2>Noam Raby</h2>
+          <a
+            href="https://github.com/noamra"
+            target="_blank"
+            title="GitHub Profile"
+          >
+            <img
+              src="./assets/svg/github.svg"
+              alt="GitHub Profile"
+              loading="lazy"
+              width="40px"
+              height="40px"
+            />
+          </a>
+          <a
+            href="https://linkedin.com/in/noamraby"
+            target="_blank"
+            title="LinkedIn Profile"
+          >
+            <img
+              src="./assets/svg/linkedin.svg"
+              alt="LinkedIn Profile"
+              loading="lazy"
+              width="40px"
+              height="40px"
+            />
+          </a>
+        </div>
       </div>
       <div class="section-2">
         <h2>About</h2>
@@ -94,6 +107,9 @@
         </p>
       </div>
     </div>
+    <script type="text/javascript">
+      console.log("Hey, thanks for taking the time to check out the source. It's un-minified just for you. 😄")
+    </script>
     <!-- <a style="display: none" href="/robots.txt" aria-label="robots"></a> TODO -->
     <!-- <a style="display: none" href="/humans.txt" aria-label="humans"></a> TODO -->
   </body>
